@@ -1,0 +1,33 @@
+{
+  "name": "qunit-test",
+  "version": "0.0.1",
+  "description": "Wireframe to test qunit skills",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Martodox/qunit-test.git"
+  },
+  "author": "Bartosz Jakubowiak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Martodox/qunit-test/issues"
+  },
+  "homepage": "https://github.com/Martodox/qunit-test#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "chalk": "^1.1.3",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-browserify": "^0.5.1",
+    "gulp-qunit": "^1.5.0",
+    "gulp-server-livereload": "^1.9.2",
+    "gulp-watch": "^4.3.11",
+    "run-sequence": "^1.2.2"
+  },
+  "dependencies": {
+    "axios": "^0.15.3"
+  }
+}
