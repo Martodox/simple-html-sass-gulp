@@ -4,6 +4,7 @@ const   gulp        = require('gulp'),
         qunit       = require('gulp-qunit'),
         watch       = require('gulp-watch'),
         runSequence = require('run-sequence'),
+        concat      = require('gulp-concat'),
         chalk       = require('chalk'),
         server      = require('gulp-server-livereload');
 
@@ -20,6 +21,18 @@ gulp.task('js', () => {
         .pipe(gulp.dest('dist'))
 });
 
+gulp.task('tests', () => {
+
+
+    return gulp.src(['src/app.js', 'src/tests.js'])
+        .pipe(concat('tests.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(browserify())
+        .pipe(gulp.dest('dist'))
+});
+
 gulp.task('webserver', function() {
     gulp.src('./dist')
     .pipe(server({
@@ -29,11 +42,11 @@ gulp.task('webserver', function() {
 
 gulp.task('default', () => {
 
-    runSequence('webserver', 'js');
+    runSequence(['webserver', 'js'], ['tests']);
 
     console.log(`${chalk.styles.green.open}[GULP] Starting watchers${chalk.styles.green.close}`);
 
     watch('./src/**/*.js', () => {
-        runSequence('js');
+        runSequence(['js'],  ['tests']);
     });
 });
