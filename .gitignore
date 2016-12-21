@@ -1,4 +1,5 @@
 dist/app.js
 dist/tests.js
+dist/ecma6/*.js
 .idea
 node_modules

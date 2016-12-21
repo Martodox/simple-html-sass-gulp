@@ -33,6 +33,19 @@ gulp.task('tests', () => {
         .pipe(gulp.dest('dist'))
 });
 
+gulp.task('ecma6', () => {
+
+
+    return gulp.src('src/ecma6/*.js')
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(browserify())
+        .pipe(gulp.dest('dist/ecma6'))
+});
+
+
+
 gulp.task('webserver', function() {
     gulp.src('./dist')
     .pipe(server({
@@ -42,11 +55,11 @@ gulp.task('webserver', function() {
 
 gulp.task('default', () => {
 
-    runSequence(['webserver', 'js'], ['tests']);
+    runSequence(['webserver', 'js', 'ecma6'], ['tests']);
 
     console.log(`${chalk.styles.green.open}[GULP] Starting watchers${chalk.styles.green.close}`);
 
     watch('./src/**/*.js', () => {
-        runSequence(['js'],  ['tests']);
+        runSequence(['js', 'ecma6'],  ['tests']);
     });
 });
