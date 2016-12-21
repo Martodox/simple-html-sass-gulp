@@ -1,7 +1,6 @@
 const   gulp        = require('gulp'),
         babel       = require('gulp-babel'),
         browserify  = require('gulp-browserify'),
-        qunit       = require('gulp-qunit'),
         watch       = require('gulp-watch'),
         runSequence = require('run-sequence'),
         concat      = require('gulp-concat'),
