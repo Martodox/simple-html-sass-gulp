@@ -22,10 +22,9 @@ gulp.task('js', () => {
 
 gulp.task('webserver', function() {
     gulp.src('./dist')
-        .pipe(server({
-            livereload: true,
-            open: true
-        }));
+    .pipe(server({
+        livereload: true
+    }));
 });
 
 gulp.task('default', () => {

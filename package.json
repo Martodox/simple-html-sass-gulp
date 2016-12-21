@@ -26,8 +26,5 @@
     "gulp-server-livereload": "^1.9.2",
     "gulp-watch": "^4.3.11",
     "run-sequence": "^1.2.2"
-  },
-  "dependencies": {
-    "axios": "^0.15.3"
   }
 }
