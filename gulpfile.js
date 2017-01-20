@@ -8,38 +8,33 @@ const   gulp        = require('gulp'),
         server      = require('gulp-server-livereload');
 
 
+const buildStuff = (src) => {
+  return src
+        .pipe(babel({presets: ['es2015']}).on('error', err => {console.log(err)}))
+        .pipe(browserify().on('error', err => {console.log(err)}))
+};
+
+
 gulp.task('js', () => {
 
     console.log(`${chalk.styles.green.open}[GULP] Starting build task${chalk.styles.green.close}`);
 
-    return gulp.src('src/app.js')
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(browserify())
+    return buildStuff(gulp.src('src/app.js'))
         .pipe(gulp.dest('dist'))
 });
 
 gulp.task('tests', () => {
 
 
-    return gulp.src(['src/app.js', 'src/tests.js'])
-        .pipe(concat('tests.js'))
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(browserify())
+    return buildStuff(gulp.src(['src/app.js', 'src/tests.js'])
+        .pipe(concat('tests.js')))
         .pipe(gulp.dest('dist'))
 });
 
 gulp.task('ecma6', () => {
 
 
-    return gulp.src('src/ecma6/*.js')
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(browserify())
+    return buildStuff(gulp.src('src/ecma6/*.js'))
         .pipe(gulp.dest('dist/ecma6'))
 });
 
