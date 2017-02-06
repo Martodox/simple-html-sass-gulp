@@ -5,13 +5,16 @@ const   gulp        = require('gulp'),
         runSequence = require('run-sequence'),
         concat      = require('gulp-concat'),
         chalk       = require('chalk'),
-        server      = require('gulp-server-livereload');
+        server      = require('gulp-server-livereload'),
+        plumber = require('gulp-plumber');
+
 
 
 const buildStuff = (src) => {
   return src
-        .pipe(babel({presets: ['es2015']}).on('error', err => {console.log(err)}))
-        .pipe(browserify().on('error', err => {console.log(err)}))
+        .pipe(plumber())
+        .pipe(babel({presets: ['es2015']}))
+        .pipe(browserify())
 };
 
 
@@ -43,7 +46,8 @@ gulp.task('ecma6', () => {
 gulp.task('webserver', function() {
     gulp.src('./dist')
     .pipe(server({
-        livereload: true
+        livereload: true,
+        clientLog: 'info'
     }));
 });
 
@@ -53,7 +57,7 @@ gulp.task('default', () => {
 
     console.log(`${chalk.styles.green.open}[GULP] Starting watchers${chalk.styles.green.close}`);
 
-    watch('./src/**/*.js', () => {
+    return watch('./src/**/*.js', () => {
         runSequence(['js', 'ecma6'],  ['tests']);
     });
 });
