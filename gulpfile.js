@@ -6,7 +6,8 @@ const   gulp        = require('gulp'),
         concat      = require('gulp-concat'),
         chalk       = require('chalk'),
         server      = require('gulp-server-livereload'),
-        plumber = require('gulp-plumber');
+        sass        = require('gulp-sass'),
+        plumber     = require('gulp-plumber');
 
 
 
@@ -28,36 +29,59 @@ gulp.task('js', () => {
 
 gulp.task('tests', () => {
 
-
     return buildStuff(gulp.src(['src/app.js', 'src/tests.js'])
         .pipe(concat('tests.js')))
         .pipe(gulp.dest('dist'))
 });
 
-gulp.task('ecma6', () => {
 
-
-    return buildStuff(gulp.src('src/ecma6/*.js'))
-        .pipe(gulp.dest('dist/ecma6'))
+gulp.task('sass', function () {
+  return gulp.src('./src/scss/app.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(gulp.dest('./dist/css'));
 });
 
 
-
-gulp.task('webserver', function() {
+gulp.task('webserver', () => {
     gulp.src('./dist')
     .pipe(server({
         livereload: true,
-        clientLog: 'info'
+        clientLog: 'info',
+        fallback: 'index.html'
+
     }));
 });
 
+gulp.task('copy-html', () => {
+    gulp.src('./src/**/*.html')
+    .pipe(gulp.dest('./dist'));
+
+});
+
+gulp.task('sass:watch', () => {
+  return watch('./src/scss/**/*.scss', () => {
+      runSequence(['sass']);
+  });
+});
+
+gulp.task('js:watch', () => {
+  return watch('./src/**/*.js', () => {
+    runSequence(['js'],  ['tests']);
+  });
+});
+
+gulp.task('html:watch', () => {
+  return watch('./src/**/*.html', () => {
+    runSequence(['copy-html']);
+  });
+});
+
+
 gulp.task('default', () => {
 
-    runSequence(['webserver', 'js', 'ecma6'], ['tests']);
+    runSequence(['webserver', 'js', 'sass', 'copy-html'], ['tests'], ['sass:watch', 'js:watch', 'html:watch']);
 
     console.log(`${chalk.styles.green.open}[GULP] Starting watchers${chalk.styles.green.close}`);
 
-    return watch('./src/**/*.js', () => {
-        runSequence(['js', 'ecma6'],  ['tests']);
-    });
+
 });
